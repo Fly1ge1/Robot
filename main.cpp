@@ -1,11 +1,11 @@
 #include "IHM.h"      
 
+
 IHM ihm; 
 
 DigitalOut Led0(PB_3);
 PwmOut Mot_Gauche(PB_5); 
 PwmOut Mot_droit(PB_4); 
-
 
 AnalogIn AnaIn (PB_1);
 BusOut Mux (PA_8, PF_1, PF_0);
@@ -29,4 +29,4 @@ int main()
 }
 
 
-23
+
