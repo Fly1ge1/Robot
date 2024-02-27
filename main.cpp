@@ -2,26 +2,29 @@
 
 IHM ihm; 
 
-DigitalOut Led0(PB_3);
 PwmOut Mot_Gauche(PB_5); 
 PwmOut Mot_droit(PB_4); 
+AnalogIn AnaIn(PB_1);
+BusOut BusSelectMux (PA_8, PF_1, PF_0);
 
-AnalogIn AnaIn (PB_1);
-BusOut Mux (PA_8, PF_1, PF_0);
-
+float decalage;
 
 int main()
 {
 	ihm.LCD_clear();
-	ihm.LCD_printf("TP IHM NBOARD");
-	Mux=0x7;
-	Mot_Gauche.period_us(10);
-	Mot_droit.period_us(10);
-	 
+	ihm.LCD_printf("TP VIRAGE DROIT");
+	Mot_Gauche.period_us(50);
+	Mot_droit.period_us(50);
+	BusSelectMux =7;
+	
 	while(1) 
 	{
-		Mot_Gauche.write(AnaIn.read());
-		Mot_droit.write(AnaIn.read());
+		decalage = AnaIn.read();
+		Mot_droit.write(0.5-decalage); //+-0.12      Si 0.3 +-0.07
+		Mot_Gauche.write(0.5+decalage);
+		ihm.LCD_gotoxy(1,0);
+		ihm.LCD_printf("val = %4.2f", decalage);
+		wait_ms(10);
 	}
 }
 

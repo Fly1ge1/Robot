@@ -28,13 +28,14 @@ Project File Date:  11/19/2018
 *** Using Compiler 'V5.06 update 5 (build 528)', folder: 'C:\LogicielsGE1\Keil_v5\ARM\ARMCC\Bin'
 Build target 'NBoard'
 compiling main.cpp...
-compiling IHM.cpp...
-IHM/IHM.cpp(11): warning:  #1361-D: function "mbed::CAN::attach(T *, void (T::*)(), mbed::CAN::IrqType) [with T=IHM]"  (declared at line 260 of "mbed/./drivers/CAN.h") was declared "deprecated"
-      can.attach(this,&IHM::can_ISR_Reader); /* Fonction d'interruption CAN*/
-IHM/IHM.cpp: 1 warning, 0 errors
+main.cpp(23): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+  		Mot_droit.write(0.5-decalage); //+-0.12      Si 0.3 +-0.07
+main.cpp(24): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+  		Mot_Gauche.write(0.5+decalage);
+main.cpp: 2 warnings, 0 errors
 linking...
-Program Size: Code=28320 RO-data=2696 RW-data=100 ZI-data=2676  
-".\BUILD\NBoard.axf" - 0 Error(s), 1 Warning(s).
+Program Size: Code=29764 RO-data=2696 RW-data=104 ZI-data=2648  
+".\BUILD\NBoard.axf" - 0 Error(s), 2 Warning(s).
 
 <h2>Software Packages used:</h2>
 
