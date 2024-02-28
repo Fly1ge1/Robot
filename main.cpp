@@ -36,7 +36,7 @@ int main()
 			Mux=AN0;
 			wait_us(20);
 			capteur_droit=AnaIn;
-			if (capteur_droit<0.2)
+			if (capteur_droit<0.5)
 			{
 				CD=0;
 			}
@@ -55,7 +55,7 @@ int main()
 			Mux=AN3;
 			wait_us(20);
 			capteur_gauche=AnaIn;	
-			if (capteur_gauche<0.2)
+			if (capteur_gauche<0.5)
 			{
 				CG=0;
 			}
@@ -74,16 +74,19 @@ int main()
 void automate()
 {
 	typedef enum {debut, avancer_tout_droit, virage_droit, virage_gauche} type_etat;
-	static type_etat etat_futur = debut;
+	static type_etat etat_futur = avancer_tout_droit;
 	type_etat etat_courant;
 	etat_courant = etat_futur;
+	
+	MD.period(50);
+	MG.period(50);
 
   switch(etat_courant)
 	{
 		case debut:
 			if (jack==0)
 			{
-				etat_futur=avancer_tout_droit;
+				etat_futur = avancer_tout_droit;
 			}
 			break;
 			
@@ -98,13 +101,15 @@ void automate()
 			}
 			 break;
 		case virage_gauche:
-			if (CG==1 && CD==0)
+			if (CG==0 && CD==0)
 			{
 				etat_futur=avancer_tout_droit;  		 
-	    }	
+	    }
+		
+			
 				break;
 		case virage_droit:
-			if (CG==0 && CD==1)
+			if (CG==0 && CD==0)
 			{
 				etat_futur=avancer_tout_droit; 		 
 	    }	
@@ -115,20 +120,31 @@ void automate()
 	 switch(etat_courant)
 	{
 		case debut:
-			MG=0;
-			MD=0;
+			MG.write(0);
+			MD.write(0);
+			ihm.LCD_gotoxy(0,0);
+			ihm.LCD_printf("debut");
 			break;
+		
 	  case avancer_tout_droit:
-			MG=0.3;
-			MD=0.3;
+			MG.write(0.5);
+			MD.write(0.5);
+			ihm.LCD_gotoxy(0,0);
+			ihm.LCD_printf("tout droit  ");
 		 break;
+		
 		case virage_gauche:
-			MG=0.3-0.07;
-			MD=0.3+0.07;
+			MG.write(0.5-0.3);
+			MD.write(0.5+0.3);
+			ihm.LCD_gotoxy(0,0);
+			ihm.LCD_printf("virage gauche");
 			break;
+		
 		case virage_droit:
-			MG=0.3+0.07;
-			MD=0.3-0.07;
+			MG.write(0.5+0.3);
+			MD.write(0.5-0.3);
+			ihm.LCD_gotoxy(0,0);
+			ihm.LCD_printf("virage droit");
 			break;			
 	 }
  }
